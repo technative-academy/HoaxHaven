@@ -1,9 +1,17 @@
 {
-
 	"[json]": {
 		"editor.formatOnSave": true
 	},
 	"[javascript]": {
+		"editor.formatOnSave": true
+	},
+	"[html]": {
+		"editor.formatOnSave": true
+	},
+	"[javascriptreact]": {
+		"editor.formatOnSave": true
+	},
+	"[css]": {
 		"editor.formatOnSave": true
 	}
 }
