@@ -1,0 +1,16 @@
+{
+	"name": "hoaxhaven-misc",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"dependencies": {},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0"
+	}
+}
