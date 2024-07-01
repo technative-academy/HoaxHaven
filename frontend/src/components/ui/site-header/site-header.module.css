@@ -1,0 +1,29 @@
+.wrapper {
+  padding: 1rem;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  background: grey;
+}
+
+.title {
+  margin: 5px 0 0 0;
+}
+
+.links {
+}
+
+.activeLink,
+.inactiveLink {
+  padding: 8px;
+}
+
+.activeLink {
+  color: #fff;
+}
+
+.inactiveLink {
+  color: #ddd;
+}

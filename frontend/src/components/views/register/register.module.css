@@ -1,0 +1,14 @@
+.wrapper {
+  background: #efefef;
+  width: 100%;
+  padding: 1rem;
+}
+
+.inputContainer {
+  display: block;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
