@@ -1,0 +1,7 @@
+.wrapper {
+  background: #efefef;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}

@@ -1,0 +1,26 @@
+.wrapper {
+  padding: 1rem;
+  border: 1px solid lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: lightgrey;
+}
+
+.links {
+  display: flex;
+}
+
+.activeLink,
+.inactiveLink {
+  font-size: 20px;
+  margin-right: 1.5rem;
+}
+
+.activeLink {
+  color: #000;
+}
+
+.inactiveLink {
+  color: #666;
+}
