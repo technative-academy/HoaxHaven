@@ -1,24 +1,25 @@
 {
-  "tabWidth": 4,
-  "useTabs": true,
-  "overrides": [
-    {
-      "files": "*.html",
-      "options": {
-        "tabWidth": 2
-      }
-    }
-  ],
-  "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": [
-    ".*\\/types.*",
-    "<THIRD_PARTY_MODULES>",
-    "^.*\\/[a-z][^/]*\\.(js|ts)$",
-    "\\.(json)$",
-    "\\.(jsx|tsx|vue|svelte)$",
-    "(^(?:\\.\\/|\\.\\.\\/|\\/|\\$)(?!.*((\\.js|\\.ts|\\.jsx|\\.tsx|\\.vue|\\.svelte|\\.json|\\.jpg|\\.jpeg|\\.png|\\.webp|\\.avif|\\.svg|\\.ico|\\.css))$))|(^.*\\/[A-Z][^/]*$)",
-    "\\.(jpg|jpeg|png|webp|avif|svg|ico)$",
-    "\\.(css)$"
-  ],
-  "importOrderSeparation": true
+	"tabWidth": 4,
+	"useTabs": true,
+	"overrides": [
+		{
+			"files": "*.html",
+			"options": {
+				"tabWidth": 2
+			}
+		}
+	],
+	"plugins": ["@trivago/prettier-plugin-sort-imports"],
+	"importOrder": [
+		"dotenv",
+		".*\\/types.*",
+		"<THIRD_PARTY_MODULES>",
+		"^.*\\/[a-z][^/]*\\.(js|ts)$",
+		"\\.(json)$",
+		"\\.(jsx|tsx|vue|svelte)$",
+		"(^(?:\\.\\/|\\.\\.\\/|\\/|\\$)(?!.*((\\.js|\\.ts|\\.jsx|\\.tsx|\\.vue|\\.svelte|\\.json|\\.jpg|\\.jpeg|\\.png|\\.webp|\\.avif|\\.svg|\\.ico|\\.css))$))|(^.*\\/[A-Z][^/]*$)",
+		"\\.(jpg|jpeg|png|webp|avif|svg|ico)$",
+		"\\.(css)$"
+	],
+	"importOrderSeparation": true
 }

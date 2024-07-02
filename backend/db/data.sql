@@ -1,28 +1,37 @@
 -- SQLBook: Code
 -- Insert data into users table
 INSERT INTO
-	users (username, email, PASSWORD)
+	users (username, email, "password", date_joined)
 VALUES
-	('john_doe', 'john_doe@example.com', 'password123'),
+	(
+		'john_doe',
+		'john_doe@example.com',
+		'password123',
+		'2024-07-02'
+	),
 	(
 		'jane_smith',
 		'jane_smith@example.com',
-		'password456'
+		'password456',
+		'2024-07-02'
 	),
 	(
 		'alice_wonder',
 		'alice_wonder@example.com',
-		'password789'
+		'password789',
+		'2024-07-02'
 	),
 	(
 		'bob_builder',
 		'bob_builder@example.com',
-		'password101'
+		'password101',
+		'2024-07-02'
 	),
 	(
 		'charlie_brown',
 		'charlie_brown@example.com',
-		'password102'
+		'password102',
+		'2024-07-02'
 	);
 
 -- Insert data into articles table

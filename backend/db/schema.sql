@@ -5,7 +5,8 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         username VARCHAR(100) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
-        PASSWORD VARCHAR(255) -- Passwords are stored but are not integral for now
+        "password" VARCHAR(255), -- Passwords are stored but are not integral for now
+        date_joined DATE NOT NULL
     );
 
 -- Creating 'articles' table
