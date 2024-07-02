@@ -36,19 +36,6 @@ userRouter.get("/:username", async (req, res, next) => {
 	}
 });
 
-// userRouter.get("/:id", async (req, res, next) => {
-// 	const { id } = req.params;
-
-// 	try {
-// 		const result = pool.query(
-// 			"SELECT users.username, articles.title, articles.description, articles.date_published FROM users JOIN articles ON users.id = $1::number",
-// 			[id],
-// 		);
-// 	} catch (err) {
-// 		console.log(err);
-// 		res.status(500).send("Server error :(");
-// 	}
-// });
 
 {
 	const schema = z.object({
