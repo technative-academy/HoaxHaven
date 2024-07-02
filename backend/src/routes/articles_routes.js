@@ -4,7 +4,7 @@ import pool from "../db.js";
 
 const articleRouter = express.Router();
 
-//Get all articles
+// Get all articles
 articleRouter.get("/", async (req, res, next) => {
 	try {
 		const results = await pool.query(
@@ -17,7 +17,7 @@ articleRouter.get("/", async (req, res, next) => {
 	}
 });
 
-//Get articles by article ID
+// Get articles by article ID
 // TODO: return tags?
 articleRouter.get("/:id", async (req, res, next) => {
 	const { id } = req.params;
@@ -61,7 +61,7 @@ articleRouter.post("/", async (req, res, next) => {
 				tagName,
 			]);
 		}
-		
+
 		// TODO: use result.rows[0].id for article id? articles.title isn't unique
 		const articleTagPost = await pool.query(
 			"INSERT INTO article_tags (article_id, tag_id) VALUES ((SELECT id FROM articles WHERE title=$1), (SELECT id FROM tags WHERE tag_name=$2));",
@@ -98,7 +98,6 @@ articleRouter.delete("/:id", async (req, res) => {
 articleRouter.put("/:id", async (req, res) => {
 	const { id } = req.params;
 	const { title, description, date_published, tag } = req.body;
-	console.log(tag);
 
 	try {
 		const updateArticle =
@@ -118,7 +117,6 @@ articleRouter.put("/:id", async (req, res) => {
 			"INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)",
 				[id, tag];
 		}
-		console.log(tag);
 
 		res.status(201).send("User has been updated :)");
 	} catch (err) {
@@ -153,7 +151,7 @@ articleRouter.get("/:articleId/tags", async (req, res) => {
 		res.json(result.rows);
 	} catch (err) {
 		console.log(err);
-		res.status(500).send("An Internal Server Error Occured");
+		res.status(500).send("An Internal Server Error Occurred");
 	}
 });
 
