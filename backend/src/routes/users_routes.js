@@ -70,7 +70,7 @@ userRouter.get("/:username", async (req, res, next) => {
 		const { username, email, password } = validated.data;
 		try {
 			await pool.query(
-				'INSERT INTO users (username, email, "password", date_joined) VALUES ($1, $2, $3, CURRENT_DATE );',
+				'INSERT INTO users (username, email, "password", date_joined) VALUES ($1, $2, $3, CURRENT_DATE);',
 				[username, email, password],
 			);
 			res.sendStatus(201);
