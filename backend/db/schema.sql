@@ -23,7 +23,7 @@ CREATE TABLE
 CREATE TABLE
     tags (
         id SERIAL PRIMARY KEY,
-        tag_name VARCHAR(100) NOT NULL
+        tag_name VARCHAR(100) UNIQUE NOT NULL
     );
 
 -- Creating 'article_tags' table with a composite primary key
