@@ -131,6 +131,81 @@ Other tests are a backlog item.
 
 <details>
 <summary>Day 2 - Tuesday</summary>
+## Development Update: Day II 
+
+Today we added support for process.env.DATABASE_URL to accommodate different database connections.
+
+Engaged in a collaborative pair programming session, enhancing problem-solving efficiency and code quality:
+Nico, elyas --> User Routes  
+Kamila, Seb --> Article routes  
+
+We used Live Server in VS code.
+
+![image](https://github.com/technative-academy/HoaxHaven/assets/107350829/503a54c4-29e1-406c-9bb4-92a635146321)
+
+
+Today's updates enhance the functionality and robustness of our user and article management system. The changes are aimed at improving data integrity, user experience, and the maintainability of the codebase.
+
+## 1. Users
+
+### List All Users
+Method: GET
+Endpoint: /users
+
+### Fetch User by Username
+Method: GET  
+Endpoint: /users/:username  
+
+### Create New User
+Method: POST  
+Endpoint: /users  
+
+### Delete User
+Method: DELETE  
+Endpoint: /users/:username  
+
+## 2. Articles
+
+### Retrieval of All Articles
+Method: GET  
+Endpoint: /articles  
+Description: Fetches all articles including their titles, descriptions, publication dates, and authors.  
+
+### Fetch Article by ID
+Method: GET  
+Endpoint:  /articles/:id  
+Description: Retrieves detailed information for a specific article by ID.    
+![image](https://github.com/technative-academy/HoaxHaven/assets/107350829/b4cb1f8a-38fc-44fd-a459-f6c8a035845e)
+
+### Create New Article and Associate Tags
+Method: POST
+Endpoint:  /articles  
+Description: Allows creation of a new article with associated tags. Handles tag existence check and insertion if not present.  
+
+### Delete Article by ID
+Method: DELETE
+Endpoint:  /articles/:id  
+Description: Deletes an article and its associated tags from the database. 
+![image](https://github.com/technative-academy/HoaxHaven/assets/107350829/63ed1b36-b221-4917-9e61-90d9fd7c57aa)
+
+
+### Update Article and Tags
+Method: PUT
+Endpoint: /articles/:id
+Description: Updates article details and manages tag associations by clearing old tags and adding new ones.
+
+### Get Articles by Tag ID
+Method: GET  
+Endpoint:  /articles/with-tag/:id  
+Description: Retrieves articles associated with a specific tag ID.  
+
+### Get Tags for a Specific Article
+Method: GET  
+Endpoint: /articles/:articleId/tags  
+Description: Fetches tags associated with a given article.  
+
+
+
 
 </details>
 
