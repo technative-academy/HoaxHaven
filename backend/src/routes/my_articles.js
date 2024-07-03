@@ -9,7 +9,7 @@ myArticleRouter.get("/", authenticateToken, async (req, res) => {
 	const userId = req.user.id;
 	try {
 		const result = await pool.query(
-			"SELECT * FROM things WHERE user_id = $1",
+			"SELECT * FROM articles WHERE user_id = $1",
 			[userId],
 		);
 		res.json(result.rows);

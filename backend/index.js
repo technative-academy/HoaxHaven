@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 
@@ -21,6 +22,7 @@ app.use(
 	}),
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req, res) => {
 	res.send("hello");
@@ -28,7 +30,7 @@ app.get("/", (req, res) => {
 
 // Mounting router
 app.use("/v1/auth", authRouter);
-app.use("/v1/my-article", myArticleRouter);
+app.use("/v1/my-things", myArticleRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/articles", articleRouter);
 

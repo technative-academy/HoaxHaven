@@ -35,7 +35,7 @@ const MyThings = () => {
 				{things.map((thing) => (
 					<li className={styles.item} key={thing.id}>
 						<div className={styles.itemContent}>
-							<p>{thing.name}</p>
+							<p>{thing.title}</p>
 							<NavLink
 								className={styles.link}
 								to={`${thing.id}/edit/`}
