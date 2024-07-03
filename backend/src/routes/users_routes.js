@@ -2,10 +2,11 @@ import express from "express";
 import z from "zod";
 
 import pool from "../db.js";
+import authenticateToken from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", async (req, res, next) => {
+userRouter.get("/", authenticateToken, async (req, res, next) => {
 	try {
 		const result = await pool.query("SELECT username FROM users");
 		res.json(result.rows);
@@ -15,7 +16,7 @@ userRouter.get("/", async (req, res, next) => {
 	}
 });
 
-userRouter.get("/:username", async (req, res, next) => {
+userRouter.get("/:username", authenticateToken, async (req, res, next) => {
 	const { username } = req.params;
 
 	try {
@@ -36,7 +37,6 @@ userRouter.get("/:username", async (req, res, next) => {
 	}
 });
 
-
 {
 	const schema = z.object({
 		// Maximise misinformation by allowing the use of special character such as the Unicode left to right inverse
@@ -46,7 +46,7 @@ userRouter.get("/:username", async (req, res, next) => {
 		password: z.string(),
 	});
 
-	userRouter.post("/", async (req, res) => {
+	userRouter.post("/", authenticateToken, async (req, res) => {
 		const validated = schema.safeParse(req.body);
 		if (!validated.success) {
 			res.status(400).send();
@@ -68,7 +68,7 @@ userRouter.get("/:username", async (req, res, next) => {
 	});
 }
 
-userRouter.delete("/:username", async (req, res, next) => {
+userRouter.delete("/:username", authenticateToken, async (req, res, next) => {
 	const { username } = req.params;
 
 	try {

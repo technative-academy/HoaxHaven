@@ -1,6 +1,7 @@
 import express from "express";
 
 import pool from "../db.js";
+import authenticateToken from "../middleware/auth.js";
 
 const articleRouter = express.Router();
 
@@ -40,14 +41,14 @@ articleRouter.get("/:id", async (req, res, next) => {
 });
 
 //Post new Article + Tag
-articleRouter.post("/", async (req, res, next) => {
-	const { title, description, user_id, tagName } = req.body;
+articleRouter.post("/", authenticateToken, async (req, res, next) => {
+	const { title, description, tagName } = req.body;
 
 	try {
 		// TODO: username instead of id?
 		const result = await pool.query(
 			"INSERT INTO articles (title, description, date_published, user_id) VALUES ($1, $2, CURRENT_DATE, $3)",
-			[title, description, user_id],
+			[title, description, req.user.id],
 		);
 
 		// TODO: check in SQL
@@ -76,7 +77,7 @@ articleRouter.post("/", async (req, res, next) => {
 });
 
 //Delete an Article by article ID.
-articleRouter.delete("/:id", async (req, res) => {
+articleRouter.delete("/:id", authenticateToken, async (req, res) => {
 	try {
 		const tagDeletion = await pool.query(
 			"Delete FROM article_tags WHERE article_id=$1;",
@@ -95,7 +96,7 @@ articleRouter.delete("/:id", async (req, res) => {
 
 //Put update on an article+tag
 // TODO: take tag name rather than id
-articleRouter.put("/:id", async (req, res) => {
+articleRouter.put("/:id", authenticateToken, async (req, res) => {
 	const { id } = req.params;
 	const { title, description, date_published, tag } = req.body;
 
@@ -158,15 +159,12 @@ articleRouter.get("/:articleId/tags", async (req, res) => {
 //Get all tags
 articleRouter.get("/tags", async (req, res) => {
 	try {
-		const result = await pool.query(
-			"SELECT tag_name FROM tags;"
-		);
+		const result = await pool.query("SELECT tag_name FROM tags;");
 		res.json(result.rows);
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("An Internal Server Error Occurred");
 	}
 });
-
 
 export default articleRouter;

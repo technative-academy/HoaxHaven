@@ -2,6 +2,8 @@ import cors from "cors";
 import express from "express";
 
 import articleRouter from "./src/routes/articles_routes.js";
+import authRouter from "./src/routes/auth.js";
+import myArticleRouter from "./src/routes/my_articles.js";
 import userRouter from "./src/routes/users_routes.js";
 
 const app = express();
@@ -25,6 +27,8 @@ app.get("/", (req, res) => {
 });
 
 // Mounting router
+app.use("/v1/auth", authRouter);
+app.use("/v1/my-article", myArticleRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/articles", articleRouter);
 
