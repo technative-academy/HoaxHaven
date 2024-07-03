@@ -1,26 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import apiService from "../services/apiService";
+import { makeApiRequest } from "../services/apiService";
 
 export const fetchThings = createAsyncThunk("things/fetchThings", async () => {
-	const response = await apiService("things", { method: "GET" });
+	const response = await makeApiRequest("articles", {
+		method: "GET",
+	});
 	return response;
 });
 
+// Needs to be updated to our backend url
 export const fetchThingsByUser = createAsyncThunk(
 	"things/fetchThingsByUser",
 	async (userId) => {
-		const response = await apiService(`users/${userId}/things`, {
+		const response = await makeApiRequest(`users/${userId}/things`, {
 			method: "GET",
 		});
 		return response;
 	},
 );
-
+// Needs to be updated to our backend url
 export const fetchMyThings = createAsyncThunk(
 	"things/fetchMyThings",
 	async () => {
-		const response = await apiService(`my-things`, {
+		const response = await makeApiRequest(`my-things`, {
 			method: "GET",
 		});
 		return response;
@@ -28,13 +31,13 @@ export const fetchMyThings = createAsyncThunk(
 );
 
 export const fetchThing = createAsyncThunk("things/fetchThing", async (id) => {
-	return await apiService(`things/${id}`, { method: "GET" });
+	return await makeApiRequest(`articles/${id}`, { method: "GET" });
 });
 
 export const addThing = createAsyncThunk(
 	"things/addThing",
 	async (newThing) => {
-		const response = await apiService("my-things", {
+		const response = await makeApiRequest("/", {
 			method: "POST",
 			body: JSON.stringify(newThing),
 		});
@@ -45,7 +48,7 @@ export const addThing = createAsyncThunk(
 export const editThing = createAsyncThunk(
 	"things/editThing",
 	async ({ id, updatedThing }) => {
-		const response = await apiService(`my-things/${id}`, {
+		const response = await makeApiRequest(`${id}`, {
 			method: "PUT",
 			body: JSON.stringify(updatedThing),
 		});
@@ -56,17 +59,61 @@ export const editThing = createAsyncThunk(
 export const deleteThing = createAsyncThunk(
 	"things/deleteThing",
 	async (id) => {
-		await apiService(`my-things/${id}`, { method: "DELETE" });
+		await makeApiRequest(`${id}`, { method: "DELETE" });
 		return id;
 	},
 );
+
+// // TODO: ADD tags
+// export const addTag = createAsyncThunk(
+// 	"things/addTag",
+// 	async (id) => {
+// 		await makeApiRequest(`with-tags/${id}`, { method: "POST" });
+// 		return id;
+// 	},
+// );
+
+// TODO: GET articles by TAGS
+// TODO: take tag name rather than id
+// "/with-tag/:id"
+export const fetchAllArticlesByTags = createAsyncThunk(
+	"things/allArticlesByTags",
+	async (id) => {
+		const response = await makeApiRequest(`with-tag/${id}`, {
+			method: "GET",
+		});
+		return response;
+	},
+);
+
+// TODO: GET tags for articles
+// "/:articleId/tags"
+
+export const fetchTagsForArticles = createAsyncThunk(
+	"things/fetchTagsForArticles",
+	async (articleId) => {
+		const response = await makeApiRequest(`${articleId}/tags`, {
+			METHOD: "GET",
+		});
+		return response;
+	},
+);
+
+// TODO: GET all tags
+// '/tags'
+export const fetchAllTags = createAsyncThunk("things/allArticles", async () => {
+	const response = await makeApiRequest(`tags`, { method: "GET" });
+	return response;
+});
 
 const thingsSlice = createSlice({
 	name: "things",
 	initialState: {
 		items: [],
+		tags: [],
 		userThings: [],
 		currentThing: null,
+		currentThingTags: [],
 		status: "idle",
 		userThingsStatus: "idle",
 		currentThingStatus: "idle",

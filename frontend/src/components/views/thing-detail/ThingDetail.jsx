@@ -44,7 +44,7 @@ const ThingDetail = () => {
 	return (
 		<div className={styles.wrapper}>
 			<p>
-				<strong>Name:</strong> <em>{thing.name}</em>
+				<strong>Name:</strong> <em>{thing.title}</em>
 			</p>
 			<p>
 				<strong>Description:</strong> <em>{thing.description}</em>
@@ -55,7 +55,7 @@ const ThingDetail = () => {
 					<em>
 						<NavLink
 							className={styles.link}
-							to={`/users/${thing.user_id}/`}
+							to={`/users/${thing.userId}/`}
 						>
 							{thing.user_name}
 						</NavLink>
