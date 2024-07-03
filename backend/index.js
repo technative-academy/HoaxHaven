@@ -10,8 +10,15 @@ const app = express();
 const port = process.env.PORT;
 
 // Middleware
+app.use(
+	cors({
+		origin: (process.env.CORS_ALLOWED_ORIGINS ?? "")
+			.split(",")
+			.filter((value) => value.trim() !== ""),
+		credentials: true,
+	}),
+);
 app.use(express.json());
-app.use(cors());
 
 app.get("/", (req, res) => {
 	res.send("hello");

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import authService from "../../../services/authService";
+import { register } from "../../../services/apiService";
 import { login } from "../../../slices/authSlice";
 import { setBreadcrumb } from "../../../slices/breadcrumbSlice";
 
@@ -25,7 +25,7 @@ const Register = () => {
 	const handleRegister = async (e) => {
 		e.preventDefault();
 		try {
-			await authService.register(name, email, password, bio);
+			await register(name, email, password, bio);
 			await dispatch(login({ email, password })).unwrap();
 			navigate("/my-things/add/");
 		} catch (error) {

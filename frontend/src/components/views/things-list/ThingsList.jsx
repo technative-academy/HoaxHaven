@@ -34,7 +34,7 @@ const ThingsList = () => {
 							className={styles.link}
 							to={`/things/${thing.id}/`}
 						>
-							{thing.name}
+							{thing.title}
 						</NavLink>
 					</li>
 				))}

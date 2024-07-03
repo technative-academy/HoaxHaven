@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import authService from "../services/authService";
+import * as api from "../services/apiService";
 
 export const login = createAsyncThunk(
 	"auth/login",
 	async ({ email, password }) => {
-		const user = await authService.login(email, password);
+		const user = await api.login(email, password);
 		return user;
 	},
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-	await authService.logout();
+	await api.logout();
 });
 
 const initialState = {
-	isLoggedIn: authService.isLoggedIn(),
+	isLoggedIn: api.isLoggedIn(),
 	status: "idle",
 	error: null,
 };
@@ -44,3 +44,14 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+// const authSlice = createSlice({
+// 	name: "auth",
+// 	initialState: {},
+// });
+
+// export default authSlice.reducer;
+
+// export const login = () => {};
+
+// export const logout = () => {};

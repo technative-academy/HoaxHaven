@@ -155,4 +155,18 @@ articleRouter.get("/:articleId/tags", async (req, res) => {
 	}
 });
 
+//Get all tags
+articleRouter.get("/tags", async (req, res) => {
+	try {
+		const result = await pool.query(
+			"SELECT tag_name FROM tags;"
+		);
+		res.json(result.rows);
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("An Internal Server Error Occurred");
+	}
+});
+
+
 export default articleRouter;
