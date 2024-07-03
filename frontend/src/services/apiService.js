@@ -1,7 +1,3 @@
-import { showToast } from "../slices/toastSlice";
-
-// import store from "../store";
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 export async function makeApiRequest(url, options = {}) {
@@ -15,39 +11,31 @@ export async function makeApiRequest(url, options = {}) {
 		options.headers["Authorization"] = `Bearer ${accessToken}`;
 	}
 
-	try {
-		let response = await fetch(`${API_URL}/${url}`, options);
+	// TODO: show toast if this throws. Had circular import issue before
+	let response = await fetch(`${API_URL}/${url}`, options);
 
-		if (
-			accessToken &&
-			(response.status === 401 || response.status === 403)
-		) {
-			// Attempt to refresh the access token and re-request
-			try {
-				accessToken = await refreshAccessToken();
-				if (accessToken) {
-					options.headers["Authorization"] = `Bearer ${accessToken}`;
-					response = await fetch(`${API_URL}/${url}`, options);
-				} else {
-					throw new Error("Unauthorized");
-				}
-			} catch (error) {
-				await logout();
+	if (accessToken && (response.status === 401 || response.status === 403)) {
+		// Attempt to refresh the access token and re-request
+		try {
+			accessToken = await refreshAccessToken();
+			if (accessToken) {
+				options.headers["Authorization"] = `Bearer ${accessToken}`;
+				response = await fetch(`${API_URL}/${url}`, options);
+			} else {
 				throw new Error("Unauthorized");
 			}
+		} catch (error) {
+			await logout();
+			throw new Error("Unauthorized");
 		}
-
-		if (response.status >= 400) {
-			const data = await response.json();
-			throw new Error(data.error || "Fetch failed");
-		}
-
-		return await response.json();
-	} catch (error) {
-		// TODO: can't use because of circular import
-		// store.dispatch(showToast(error.message));
-		throw error;
 	}
+
+	if (response.status >= 400) {
+		const data = await response.json();
+		throw new Error(data.error || "Fetch failed");
+	}
+
+	return await response.json();
 }
 
 export function register(name, email, password, bio) {
