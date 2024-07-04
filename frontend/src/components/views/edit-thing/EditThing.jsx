@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
+import { makeApiRequest } from "../../../services/apiService.js";
+
 import { setBreadcrumb } from "../../../slices/breadcrumbSlice";
 import { fetchThing, editThing } from "../../../slices/thingsSlice";
 import { showToast } from "../../../slices/toastSlice";
@@ -12,14 +14,9 @@ const EditThing = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const thing = useSelector((state) => state.things.currentThing);
 
-	const [name, setName] = useState(thing?.title ?? "");
-	const [description, setDescription] = useState(thing?.description ?? "");
-	const [tag, setTag] = useState(thing?.tags.join(", ") ?? "");
-	// const [tag, setTag] = useState(thing ? thing.tags : "");
-
-	console.log(thing);
+	const [isLoading, setIsLoading] = useState(false);
+	const [thing, setThing] = useState(null);
 
 	useEffect(() => {
 		dispatch(
@@ -32,65 +29,85 @@ const EditThing = () => {
 	}, []);
 
 	useEffect(() => {
-		dispatch(fetchThing(id));
-	}, [id]);
-
-	useEffect(() => {
-		if (thing) {
-			setName(thing.title);
-			setDescription(thing.description);
+		if (!isLoading) {
+			setIsLoading(true);
+			(async () => {
+				const thingData = await makeApiRequest(`articles/${id}`);
+				thingData.tags = thingData.tags.join(", ");
+				setThing(thingData);
+				setIsLoading(false);
+			})();
 		}
-	}, []);
+	}, [id]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		dispatch(
 			editThing({
 				id,
-				updatedThing: { title: name, description, tags: tag },
+				updatedThing: { ...thing, tags: thing.tags.split(", ") },
 			}),
 		);
-		dispatch(showToast(`${name} updated!`));
+		dispatch(showToast(`${thing.title} updated!`));
 		navigate("/my-things/");
 	};
 
 	return (
 		<div className={styles.wrapper}>
-			<form className={styles.form} onSubmit={handleSubmit}>
-				<label className={styles.inputContainer}>
-					<p>Name</p>
-					<input
-						type="text"
-						className={styles.input}
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						placeholder="Name"
-						required
-					/>
-				</label>
-				<label className={styles.inputContainer}>
-					<p>Description</p>
-					<textarea
-						className={styles.input}
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}
-						placeholder="Description"
-						required
-					/>
-				</label>
-				<label className={styles.inputContainer}>
-					<p>Tag</p>
-					<input
-						className={styles.input}
-						value={tag}
-						onChange={(e) => setTag(e.target.value)}
-						required
-					/>
-				</label>
-				<div className={styles.inputContainer}>
-					<button type="submit">Edit Thing</button>
-				</div>
-			</form>
+			{isLoading || thing == null ? (
+				<p>Loading...</p>
+			) : (
+				<form className={styles.form} onSubmit={handleSubmit}>
+					<label className={styles.inputContainer}>
+						<p>Name</p>
+						<input
+							type="text"
+							className={styles.input}
+							value={thing.title}
+							onChange={(e) =>
+								setThing((thing) => ({
+									...thing,
+									title: e.target.value,
+								}))
+							}
+							placeholder="Name"
+							required
+						/>
+					</label>
+					<label className={styles.inputContainer}>
+						<p>Description</p>
+						<textarea
+							className={styles.input}
+							value={thing.description}
+							onChange={(e) =>
+								setThing((thing) => ({
+									...thing,
+									description: e.target.value,
+								}))
+							}
+							placeholder="Description"
+							required
+						/>
+					</label>
+					<label className={styles.inputContainer}>
+						<p>Tag</p>
+						<input
+							className={styles.input}
+							value={thing.tags}
+							onChange={(e) =>
+								setThing((thing) => ({
+									...thing,
+									tags: e.target.value,
+								}))
+							}
+							required
+						/>
+					</label>
+					<div className={styles.inputContainer}>
+						<button type="submit">Edit Thing</button>
+					</div>
+				</form>
+			)}
 		</div>
 	);
 };
