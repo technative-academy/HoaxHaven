@@ -37,7 +37,7 @@ export const fetchThing = createAsyncThunk("things/fetchThing", async (id) => {
 export const addThing = createAsyncThunk(
 	"things/addThing",
 	async (newThing) => {
-		const response = await makeApiRequest("/", {
+		const response = await makeApiRequest("articles", {
 			method: "POST",
 			body: JSON.stringify(newThing),
 		});
@@ -110,10 +110,8 @@ const thingsSlice = createSlice({
 	name: "things",
 	initialState: {
 		items: [],
-		tags: [],
 		userThings: [],
 		currentThing: null,
-		currentThingTags: [],
 		status: "idle",
 		userThingsStatus: "idle",
 		currentThingStatus: "idle",

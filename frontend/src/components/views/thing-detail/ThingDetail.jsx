@@ -49,13 +49,18 @@ const ThingDetail = () => {
 			<p>
 				<strong>Description:</strong> <em>{thing.description}</em>
 			</p>
+			<p>
+				<strong>Tags: </strong>
+				<em> {thing.tags.join(", ")}</em>
+			</p>
+
 			{isLoggedIn && (
 				<p>
 					<strong>Owner:</strong>
 					<em>
 						<NavLink
 							className={styles.link}
-							to={`/users/${thing.userId}/`}
+							to={`/users/${thing.username}/`}
 						>
 							{thing.user_name}
 						</NavLink>

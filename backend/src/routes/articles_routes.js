@@ -19,13 +19,13 @@ articleRouter.get("/", async (req, res, next) => {
 });
 
 // Get articles by article ID
-// TODO: return tags?
 articleRouter.get("/:id", async (req, res, next) => {
 	const { id } = req.params;
+	console.log(id);
 
 	try {
 		const result = await pool.query(
-			"SELECT * FROM articles WHERE id = $1",
+			'SELECT articles.title, articles.description, articles.date_published AS datePublished, users.username, array_agg(tags.tag_name) AS "tags" FROM articles JOIN article_tags ON article_tags.article_id=articles.id JOIN tags ON tags.id=article_tags.tag_id JOIN users ON articles.user_id=users.id WHERE articles.id = $1 GROUP BY articles.title, articles.description, articles.date_published, users.username',
 			[id],
 		);
 

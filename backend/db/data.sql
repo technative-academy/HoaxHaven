@@ -1,39 +1,43 @@
 -- SQLBook: Code
 -- Insert data into users table
 INSERT INTO
-	users (username, email, "password", date_joined)
+    users (username, email, "password", date_joined, bio)
 VALUES
-	(
-		'john_doe',
-		'john_doe@example.com',
-		'password123',
-		'2024-07-02'
-	),
-	(
-		'jane_smith',
-		'jane_smith@example.com',
-		'password456',
-		'2024-07-02'
-	),
-	(
-		'alice_wonder',
-		'alice_wonder@example.com',
-		'password789',
-		'2024-07-02'
-	),
-	(
-		'bob_builder',
-		'bob_builder@example.com',
-		'password101',
-		'2024-07-02'
-	),
-	(
-		'charlie_brown',
-		'charlie_brown@example.com',
-		'password102',
-		'2024-07-02'
-	);
-
+    (
+        'john_doe',
+        'john_doe@example.com',
+        'password123',
+        '2024-07-02',
+        'A curious explorer of data and technology.'
+    ),
+    (
+        'jane_smith',
+        'jane_smith@example.com',
+        'password456',
+        '2024-07-02',
+        'Passionate about sustainability and green tech.'
+    ),
+    (
+        'alice_wonder',
+        'alice_wonder@example.com',
+        'password789',
+        '2024-07-02',
+        'Lover of arts and avid reader.'
+    ),
+    (
+        'bob_builder',
+        'bob_builder@example.com',
+        'password101',
+        '2024-07-02',
+        'Enthusiastic DIY expert and amateur carpenter.'
+    ),
+    (
+        'charlie_brown',
+        'charlie_brown@example.com',
+        'password102',
+        '2024-07-02',
+        'Freelance writer and coffee aficionado.'
+    );
 -- Insert data into articles table
 INSERT INTO
 	articles (title, description, date_published, user_id)

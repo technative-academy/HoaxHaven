@@ -13,6 +13,7 @@ const AddThing = () => {
 	const dispatch = useDispatch();
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
+	const [tag, setTag] = useState("");
 
 	useEffect(() => {
 		dispatch(
@@ -25,8 +26,9 @@ const AddThing = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(addThing({ name, description }));
+		dispatch(addThing({ title: name, description, tagName: tag }));
 		dispatch(showToast(`${name} added!`));
+		setTag("");
 		setName("");
 		setDescription("");
 		navigate("/my-things/");
@@ -52,6 +54,15 @@ const AddThing = () => {
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 						placeholder="Description"
+						required
+					/>
+				</label>
+				<label className={styles.inputContainer}>
+					<p>Tag</p>
+					<input
+						value={tag}
+						onChange={(e) => setTag(e.target.value)}
+						placeholder="Add a tag!"
 						required
 					/>
 				</label>

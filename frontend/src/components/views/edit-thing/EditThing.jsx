@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { setBreadcrumb } from "../../../slices/breadcrumbSlice";
-import { fetchThings, editThing } from "../../../slices/thingsSlice";
+import { fetchThing, editThing } from "../../../slices/thingsSlice";
 import { showToast } from "../../../slices/toastSlice";
 
 import styles from "./edit-thing.module.css";
@@ -12,14 +12,14 @@ const EditThing = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const thing = useSelector((state) =>
-		state.things.items.find((thing) => thing.id === parseInt(id)),
-	);
+	const thing = useSelector((state) => state.things.currentThing);
 
-	const [name, setName] = useState(thing ? thing.name : "");
-	const [description, setDescription] = useState(
-		thing ? thing.description : "",
-	);
+	const [name, setName] = useState(thing?.title ?? "");
+	const [description, setDescription] = useState(thing?.description ?? "");
+	const [tag, setTag] = useState(thing?.tags.join(", ") ?? "");
+	// const [tag, setTag] = useState(thing ? thing.tags : "");
+
+	console.log(thing);
 
 	useEffect(() => {
 		dispatch(
@@ -29,24 +29,27 @@ const EditThing = () => {
 				{ label: "Edit thing" },
 			]),
 		);
-	}, [dispatch]);
+	}, []);
 
 	useEffect(() => {
-		if (!thing) {
-			dispatch(fetchThings());
-		}
-	}, [thing, dispatch]);
+		dispatch(fetchThing(id));
+	}, [id]);
 
 	useEffect(() => {
 		if (thing) {
-			setName(thing.name);
+			setName(thing.title);
 			setDescription(thing.description);
 		}
-	}, [thing]);
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		dispatch(editThing({ id, updatedThing: { name, description } }));
+		dispatch(
+			editThing({
+				id,
+				updatedThing: { title: name, description, tags: tag },
+			}),
+		);
 		dispatch(showToast(`${name} updated!`));
 		navigate("/my-things/");
 	};
@@ -72,6 +75,15 @@ const EditThing = () => {
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 						placeholder="Description"
+						required
+					/>
+				</label>
+				<label className={styles.inputContainer}>
+					<p>Tag</p>
+					<input
+						className={styles.input}
+						value={tag}
+						onChange={(e) => setTag(e.target.value)}
 						required
 					/>
 				</label>
