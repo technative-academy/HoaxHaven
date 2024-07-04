@@ -22,8 +22,8 @@ const EditThing = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "My things", url: "/my-things/" },
-				{ label: "Edit thing" },
+				{ label: "My articles", url: "/my-things/" },
+				{ label: "Edit article" },
 			]),
 		);
 	}, []);
@@ -104,7 +104,7 @@ const EditThing = () => {
 						/>
 					</label>
 					<div className={styles.inputContainer}>
-						<button type="submit">Edit Thing</button>
+						<button type="submit">Edit article</button>
 					</div>
 				</form>
 			)}
