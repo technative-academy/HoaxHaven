@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 
 // Mounting router
 app.use("/v1/auth", authRouter);
-app.use("/v1/my-things", myArticleRouter);
+app.use("/v1/my-articles", myArticleRouter);
 app.use("/v1/users", userRouter);
 app.use("/v1/articles", articleRouter);
 

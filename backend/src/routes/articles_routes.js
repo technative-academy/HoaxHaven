@@ -44,28 +44,34 @@ articleRouter.post("/", authenticateToken, async (req, res, next) => {
 	const { title, description, tagName } = req.body;
 
 	try {
-		// TODO: username instead of id?
+		// the RETURNING returns the Id for the console.log below
 		const result = await pool.query(
-			"INSERT INTO articles (title, description, date_published, user_id) VALUES ($1, $2, CURRENT_DATE, $3)",
+			"INSERT INTO articles (title, description, date_published, user_id) VALUES ($1, $2, CURRENT_DATE, $3) RETURNING id, title, description, date_published, user_id;",
 			[title, description, req.user.id],
 		);
 
-		// TODO: check in SQL
-		const tagCheck = await pool.query("SELECT tag_name FROM tags;");
-		let list = [];
-		for (let i = 0; i < tagCheck.rows.length; i++) {
-			list.push(tagCheck.rows[i].tag_name);
-		}
-		if (!list.includes(tagName)) {
-			await pool.query("INSERT INTO tags (tag_name) VALUES ($1);", [
-				tagName,
-			]);
+		const resultId = result.rows[0].id;
+
+		const tagCheck = await pool.query(
+			"SELECT id FROM tags WHERE tag_name=$1 LIMIT 1;",
+			[tagName],
+		);
+
+		let tagId;
+
+		if (tagCheck.rows.length === 0) {
+			const tagInsertResult = await pool.query(
+				"INSERT INTO tags (tag_name) VALUES ($1) RETURNING id;",
+				[tagName],
+			);
+			tagId = tagInsertResult.rows[0].id;
+		} else {
+			tagId = tagCheck.rows[0].id;
 		}
 
-		// TODO: use result.rows[0].id for article id? articles.title isn't unique
-		const articleTagPost = await pool.query(
-			"INSERT INTO article_tags (article_id, tag_id) VALUES ((SELECT id FROM articles WHERE title=$1), (SELECT id FROM tags WHERE tag_name=$2));",
-			[title, tagName],
+		await pool.query(
+			"INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2);",
+			[resultId, tagId],
 		);
 
 		res.status(201).json(result.rows[0]);

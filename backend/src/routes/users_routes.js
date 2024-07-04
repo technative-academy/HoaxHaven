@@ -16,21 +16,33 @@ userRouter.get("/", authenticateToken, async (req, res, next) => {
 	}
 });
 
-userRouter.get("/:username", authenticateToken, async (req, res, next) => {
+// GET: detailed view of user with username, bio, date joined and articles they've written. Fetched using username
+userRouter.get("/:username", async (req, res, next) => {
 	const { username } = req.params;
 
 	try {
-		const result = await pool.query(
-			"SELECT username FROM users WHERE $1::text = users.username",
+		const user = await pool.query(
+			"SELECT users.username, users.bio, users.date_joined FROM users WHERE $1 = users.username",
 			[username],
 		);
-		const row = result.rows[0];
-		if (!row) {
+		const articles = await pool.query(
+			"SELECT  articles.id, articles.title FROM articles JOIN users ON articles.user_id=users.id WHERE users.id=(SELECT id FROM users WHERE username=$1)",
+			[username],
+		);
+		let articlesList = [];
+		const userInfoToBeSent = user.rows[0];
+		const articlesByThisUser = articles.rows.map((element) => {
+			articlesList.push(element);
+		});
+
+		if (!userInfoToBeSent) {
 			res.status(404).send("Not found");
 			return;
 		}
-
-		res.json(row);
+		res.json({
+			user: userInfoToBeSent,
+			articles: articlesList,
+		});
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Server error :(");
@@ -57,7 +69,7 @@ userRouter.get("/:username", authenticateToken, async (req, res, next) => {
 		const { username, email, password } = validated.data;
 		try {
 			await pool.query(
-				'INSERT INTO users (username, email, "password", date_joined) VALUES ($1, $2, $3, CURRENT_DATE);',
+				'INSERT INTO users (username, email, "password", date_joined, bio) VALUES ($1, $2, $3, CURRENT_DATE, $4);',
 				[username, email, password],
 			);
 			res.sendStatus(201);
@@ -94,5 +106,32 @@ userRouter.delete("/:username", authenticateToken, async (req, res, next) => {
 		res.status(500).send("Server error :(");
 	}
 });
+
+// userRouter.put("/:id/bio", authenticateToken, async (req, res) => {
+// 	const userId = req.params.id;
+// 	const { bio } = req.body;
+
+// 	// Optional: validate the bio input
+// 	if (typeof bio !== "string" || bio.trim() === "") {
+// 		res.status(400).send("Invalid bio provided.");
+// 		return;
+// 	}
+
+// 	try {
+// 		const result = await pool.query(
+// 			"UPDATE users SET bio = $1 WHERE id = $2",
+// 			[bio, userId],
+// 		);
+
+// 		if (result.rowCount === 0) {
+// 			res.status(404).send("User not found.");
+// 		} else {
+// 			res.sendStatus(204);
+// 		}
+// 	} catch (err) {
+// 		console.error(err);
+// 		res.status(500).send("Server error: Unable to update bio.");
+// 	}
+// });
 
 export default userRouter;
