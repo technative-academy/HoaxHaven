@@ -20,8 +20,8 @@ const DeleteThing = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "My things", url: "/my-things/" },
-				{ label: "Delete thing" },
+				{ label: "My article", url: "/my-things/" },
+				{ label: "Delete article" },
 			]),
 		);
 	}, [dispatch]);
@@ -43,7 +43,7 @@ const DeleteThing = () => {
 		<div className={styles.wrapper}>
 			<form onSubmit={handleSubmit}>
 				<p>{thing && thing.name}</p>
-				<button type="submit">Delete thing</button>
+				<button type="submit">Delete article</button>
 			</form>
 		</div>
 	);

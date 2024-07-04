@@ -130,31 +130,25 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 
 //Get articles by Tags
 // TODO: take tag name rather than id
-articleRouter.get("/with-tag/:id", async (req, res) => {
+articleRouter.get("/with-tag/:tagName", async (req, res) => {
 	try {
 		const result = await pool.query(
-			"SELECT articles.id as articleId, articles.title as title, articles.user_id as authorId, users.username as authorUsername FROM articles JOIN article_tags ON articles.id=article_tags.article_id JOIN users ON users.id = articles.user_id WHERE article_tags.tag_id = $1;",
-			[req.params.id],
+			`SELECT articles.id,
+			articles.title, 
+			articles.user_id, 
+			users.username,
+			tags.tag_name 
+			FROM articles 
+			JOIN article_tags ON articles.id=article_tags.article_id 
+			JOIN users ON users.id = articles.user_id
+			JOIN tags ON article_tags.tag_id=tags.id
+			WHERE tags.tag_name = $1`,
+			[req.params.tagName],
 		);
 		res.json(result.rows);
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Internal Server Error");
-	}
-});
-
-//Get tags for articles
-// TODO: merge with GET /:articleId
-articleRouter.get("/:articleId/tags", async (req, res) => {
-	try {
-		const result = await pool.query(
-			"SELECT tags.tag_name, articles.title FROM tags JOIN article_tags ON tags.id=article_tags.tag_id JOIN articles ON articles.id=article_tags.article_id WHERE article_tags.article_id=$1;",
-			[req.params.articleId],
-		);
-		res.json(result.rows);
-	} catch (err) {
-		console.log(err);
-		res.status(500).send("An Internal Server Error Occurred");
 	}
 });
 

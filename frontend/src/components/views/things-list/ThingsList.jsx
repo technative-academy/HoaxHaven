@@ -19,7 +19,7 @@ const ThingsList = () => {
 
 	useEffect(() => {
 		dispatch(
-			setBreadcrumb([{ label: "Home", url: "/" }, { label: "Things" }]),
+			setBreadcrumb([{ label: "Home", url: "/" }, { label: "Articles" }]),
 		);
 	}, [dispatch]);
 

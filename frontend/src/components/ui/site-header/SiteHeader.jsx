@@ -16,8 +16,8 @@ function SiteHeader() {
 	const navLinks = [];
 	if (isLoggedIn) {
 		navLinks.push(
-			{ label: "My things", url: "/my-things/" },
-			{ label: "Add thing", url: "/my-things/add/" },
+			{ label: "My articles", url: "/my-things/" },
+			{ label: "Add article", url: "/my-things/add/" },
 		);
 	} else {
 		navLinks.push(
@@ -28,7 +28,7 @@ function SiteHeader() {
 
 	return (
 		<div className={styles.wrapper}>
-			<h1 className={styles.title}>The Things!</h1>
+			<h1 className={styles.title}>Hoax Haven!</h1>
 			<nav className={styles.links}>
 				{navLinks.map((navLink) => (
 					<NavLink
