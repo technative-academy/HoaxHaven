@@ -62,7 +62,7 @@ const ThingDetail = () => {
 							className={styles.link}
 							to={`/users/${thing.username}/`}
 						>
-							{thing.user_name}
+							{thing.username}
 						</NavLink>
 					</em>
 				</p>
