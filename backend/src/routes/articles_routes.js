@@ -119,7 +119,6 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 		// TODO: 404 handling
 
 		// TODO: update tags
-		-
 
 		res.status(201).send("User has been updated :)");
 	} catch (err) {
