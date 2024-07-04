@@ -5,11 +5,13 @@ import authenticateToken from "../middleware/auth.js";
 
 const myArticleRouter = express.Router();
 
+// GET MY ARTICLES /v1/my-things/
+// This route returns JSON which contains all articles based on req.session.user. I.e. logged in users articles by their user ID.
 myArticleRouter.get("/", authenticateToken, async (req, res) => {
 	const userId = req.user.id;
 	try {
 		const result = await pool.query(
-			"SELECT * FROM articles WHERE user_id = $1",
+			"SELECT id, title, date_published FROM articles WHERE user_id = $1",
 			[userId],
 		);
 		res.json(result.rows);
