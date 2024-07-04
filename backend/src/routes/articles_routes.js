@@ -21,7 +21,6 @@ articleRouter.get("/", async (req, res, next) => {
 // Get articles by article ID
 articleRouter.get("/:id", async (req, res, next) => {
 	const { id } = req.params;
-	// console.log(id);
 
 	try {
 		const result = await pool.query(
@@ -104,26 +103,18 @@ articleRouter.delete("/:id", authenticateToken, async (req, res) => {
 // TODO: take tag name rather than id
 articleRouter.put("/:id", authenticateToken, async (req, res) => {
 	const { id } = req.params;
-	const { title, description, date_published, tag } = req.body;
+	const { title, description } = req.body;
 
 	try {
 		const updateArticle =
-			"UPDATE articles SET title=$1, description=$2, date_published=$3 WHERE id = $4";
+			"UPDATE articles SET title=$1, description=$2 WHERE id = $3";
 		await pool.query(updateArticle, [
 			title,
 			description,
-			date_published,
 			id,
 		]);
 
-		if (tag) {
-			await pool.query("DELETE FROM article_tags WHERE article_id = $1", [
-				id,
-			]);
-
-			"INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)",
-				[id, tag];
-		}
+		// TODO: update tags
 
 		res.status(201).send("User has been updated :)");
 	} catch (err) {

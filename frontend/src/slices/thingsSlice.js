@@ -48,7 +48,7 @@ export const addThing = createAsyncThunk(
 export const editThing = createAsyncThunk(
 	"things/editThing",
 	async ({ id, updatedThing }) => {
-		const response = await makeApiRequest(`${id}`, {
+		const response = await makeApiRequest(`articles/${id}`, {
 			method: "PUT",
 			body: JSON.stringify(updatedThing),
 		});
@@ -59,7 +59,7 @@ export const editThing = createAsyncThunk(
 export const deleteThing = createAsyncThunk(
 	"things/deleteThing",
 	async (id) => {
-		await makeApiRequest(`${id}`, { method: "DELETE" });
+		await makeApiRequest(`articles/${id}`, { method: "DELETE" });
 		return id;
 	},
 );
