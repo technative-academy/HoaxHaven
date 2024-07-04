@@ -16,21 +16,33 @@ userRouter.get("/", authenticateToken, async (req, res, next) => {
 	}
 });
 
-userRouter.get("/:username", authenticateToken, async (req, res, next) => {
+// GET: detailed view of user with username, bio, date joined and articles they've written. Fetched using username
+userRouter.get("/:username", async (req, res, next) => {
 	const { username } = req.params;
 
 	try {
-		const result = await pool.query(
-			"SELECT username FROM users WHERE $1::text = users.username",
+		const user = await pool.query(
+			"SELECT users.username, users.bio, users.date_joined FROM users WHERE $1 = users.username",
 			[username],
 		);
-		const row = result.rows[0];
-		if (!row) {
+		const articles = await pool.query(
+			"SELECT  articles.id, articles.title FROM articles JOIN users ON articles.user_id=users.id WHERE users.id=(SELECT id FROM users WHERE username=$1)",
+			[username],
+		);
+		let articlesList = [];
+		const userInfoToBeSent = user.rows[0];
+		const articlesByThisUser = articles.rows.map((element) => {
+			articlesList.push(element);
+		});
+
+		if (!userInfoToBeSent) {
 			res.status(404).send("Not found");
 			return;
 		}
-
-		res.json(row);
+		res.json({
+			user: userInfoToBeSent,
+			articles: articlesList,
+		});
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Server error :(");
