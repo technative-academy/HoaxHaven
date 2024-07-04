@@ -53,12 +53,11 @@ const loginUser = async (email, password) => {
 
 	// If the user exists and the password matches, generate access and refresh tokens
 	if (user && (await bcrypt.compare(password, user.password))) {
-		const userData = { id: user.id, email: user.email };
+		const userData = { username: user.username, email: user.email };
 		const accessToken = generateAccessToken(userData);
 		const refreshToken = generateRefreshToken(userData);
 
 		return {
-			id: user.id,
 			name: user.username,
 			accessToken,
 			refreshToken,
@@ -72,11 +71,11 @@ const loginUser = async (email, password) => {
 const refreshAccessToken = async (refreshToken) => {
 	try {
 		// Verify the refresh token
-		const user = await jwt.verify(
+		const user = jwt.verify(
 			refreshToken,
 			process.env.REFRESH_TOKEN_SECRET,
 		);
-		const userData = { id: user.id, email: user.email };
+		const userData = { ...user };
 		// Generate and return a new access token
 		return generateAccessToken(userData);
 	} catch (err) {

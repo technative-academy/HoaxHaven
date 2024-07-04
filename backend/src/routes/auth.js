@@ -21,7 +21,7 @@ authRouter.post("/register", async (req, res) => {
 authRouter.post("/login", async (req, res) => {
 	try {
 		const { email, password } = req.body;
-		const { id, name, accessToken, refreshToken } = await loginUser(
+		const { name, accessToken, refreshToken } = await loginUser(
 			email,
 			password,
 		);
@@ -35,7 +35,7 @@ authRouter.post("/login", async (req, res) => {
 		});
 
 		// Send the access token with the user data in the response
-		res.json({ id, name, accessToken });
+		res.json({ name, accessToken });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}

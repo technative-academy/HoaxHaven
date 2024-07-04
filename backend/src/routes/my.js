@@ -3,23 +3,44 @@ import express from "express";
 import pool from "../db.js";
 import authenticateToken from "../middleware/auth.js";
 
-const myArticleRouter = express.Router();
+const myRouter = express.Router();
 
-// GET MY ARTICLES /v1/my-things/
+// GET info about me /v1/my/
 // This route returns JSON which contains all articles based on req.session.user. I.e. logged in users articles by their user ID.
-myArticleRouter.get("/", authenticateToken, async (req, res) => {
-	const userId = req.user.id;
+// TODO: most of this logic is shared with /v1/users/:id, split into a function that this endpoint calls
+myRouter.get("/", authenticateToken, async (req, res, next) => {
+	const username = req.user.username;
+
 	try {
-		const result = await pool.query(
-			"SELECT id, title, date_published FROM articles WHERE user_id = $1",
-			[userId],
+		const userDbResult = await pool.query(
+			"SELECT users.username, users.bio, users.date_joined FROM users WHERE $1 = users.username",
+			[username],
 		);
-		res.json(result.rows);
-	} catch (error) {
-		res.status(500).json({ error: "Internal Server Error" });
+		const articlesDbResult = await pool.query(
+			"SELECT  articles.id, articles.title FROM articles JOIN users ON articles.user_id=users.id WHERE users.id=(SELECT id FROM users WHERE username=$1)",
+			[username],
+		);
+		let articlesList = [];
+		const userInfoToBeSent = userDbResult.rows[0];
+		const articlesByThisUser = articlesDbResult.rows.map((element) => {
+			articlesList.push(element);
+		});
+
+		if (!userInfoToBeSent) {
+			res.status(404).send("Not found");
+			return;
+		}
+		res.json({
+			...userInfoToBeSent,
+			articles: articlesList,
+		});
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("Server error :(");
 	}
 });
 
+/*
 myArticleRouter.post("/", authenticateToken, async (req, res) => {
 	const { name, description } = req.body;
 	const userId = req.user.id;
@@ -54,7 +75,7 @@ myArticleRouter.put("/:id", authenticateToken, async (req, res) => {
 
 myArticleRouter.delete("/:id", authenticateToken, async (req, res) => {
 	const { id } = req.params;
-	const userId = req.user.id;
+	const userId = req.;
 	try {
 		const result = await pool.query(
 			"DELETE FROM things WHERE id = $1 AND user_id = $2 RETURNING *",
@@ -68,8 +89,9 @@ myArticleRouter.delete("/:id", authenticateToken, async (req, res) => {
 		res.status(500).json({ error: "Internal Server Error" });
 	}
 });
+*/
 
 
 
 
-export default myArticleRouter;
+export default myRouter;

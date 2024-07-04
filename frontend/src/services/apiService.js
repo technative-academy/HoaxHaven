@@ -15,6 +15,8 @@ export async function makeApiRequest(url, options = {}) {
 	let response = await fetch(`${API_URL}/${url}`, options);
 
 	if (accessToken && (response.status === 401 || response.status === 403)) {
+		if (url === "auth/refresh-token") throw new Error("Couldn't get access token");
+
 		// Attempt to refresh the access token and re-request
 		try {
 			accessToken = await refreshAccessToken();

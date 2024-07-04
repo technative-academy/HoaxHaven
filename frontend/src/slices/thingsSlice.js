@@ -24,7 +24,7 @@ export const fetchThingsByUser = createAsyncThunk(
 export const fetchMyThings = createAsyncThunk(
 	"things/fetchMyThings",
 	async () => {
-		const response = await makeApiRequest(`my-things`, {
+		const response = await makeApiRequest("my", {
 			method: "GET",
 		});
 		return response;
@@ -111,7 +111,7 @@ const thingsSlice = createSlice({
 	name: "things",
 	initialState: {
 		items: [],
-		userThings: [],
+		userThings: null,
 		currentThing: null,
 		status: "idle",
 		userThingsStatus: "idle",
@@ -149,7 +149,6 @@ const thingsSlice = createSlice({
 			})
 			.addCase(fetchMyThings.fulfilled, (state, action) => {
 				state.userThingsStatus = "succeeded";
-				console.log(action.payload);
 				state.userThings = action.payload;
 			})
 			.addCase(fetchMyThings.rejected, (state, action) => {

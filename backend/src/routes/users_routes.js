@@ -49,37 +49,6 @@ userRouter.get("/:username", async (req, res, next) => {
 	}
 });
 
-{
-	const schema = z.object({
-		// Maximise misinformation by allowing the use of special character such as the Unicode left to right inverse
-		username: z.string().min(2).max(16),
-		email: z.string().email(),
-		// Same here
-		password: z.string(),
-	});
-
-	userRouter.post("/", authenticateToken, async (req, res) => {
-		const validated = schema.safeParse(req.body);
-		if (!validated.success) {
-			res.status(400).send();
-			return;
-		}
-
-		// TODO: hash password
-		const { username, email, password } = validated.data;
-		try {
-			await pool.query(
-				'INSERT INTO users (username, email, "password", date_joined, bio) VALUES ($1, $2, $3, CURRENT_DATE, $4);',
-				[username, email, password],
-			);
-			res.sendStatus(201);
-		} catch (err) {
-			console.log(err);
-			res.status(500).send("Server error :(");
-		}
-	});
-}
-
 userRouter.delete("/:username", authenticateToken, async (req, res, next) => {
 	const { username } = req.params;
 
