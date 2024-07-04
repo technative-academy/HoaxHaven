@@ -6,7 +6,8 @@ CREATE TABLE
         username VARCHAR(100) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         "password" VARCHAR(255), -- Passwords are stored but are not integral for now
-        date_joined DATE NOT NULL
+        date_joined DATE NOT NULL,
+		bio TEXT 
     );
 
 -- Creating 'articles' table
