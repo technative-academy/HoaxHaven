@@ -24,12 +24,15 @@ articleRouter.get("/:id", async (req, res, next) => {
 
 	try {
 		const result = await pool.query(
-			'SELECT articles.title, articles.description, articles.date_published AS datePublished, users.username, array_agg(tags.tag_name) AS "tags" FROM articles JOIN article_tags ON article_tags.article_id=articles.id JOIN tags ON tags.id=article_tags.tag_id JOIN users ON articles.user_id=users.id WHERE articles.id = $1 GROUP BY articles.title, articles.description, articles.date_published, users.username',
+			'SELECT articles.title, articles.description, articles.date_published AS datePublished, users.username, array_agg(tags.tag_name) AS "tags" FROM articles LEFT JOIN article_tags ON article_tags.article_id=articles.id LEFT JOIN tags ON tags.id=article_tags.tag_id JOIN users ON articles.user_id=users.id WHERE articles.id = $1 GROUP BY articles.title, articles.description, articles.date_published, users.username',
 			[id],
 		);
 
 		if (result.rows.length > 0) {
-			res.json(result.rows[0]);
+			const article = result.rows[0];
+			article.tags = article.tags.filter(item => item != null);
+
+			res.json(article);
 		} else {
 			res.status(404).send("Article not found");
 		}
@@ -46,8 +49,8 @@ articleRouter.post("/", authenticateToken, async (req, res, next) => {
 	try {
 		// the RETURNING returns the Id for the console.log below
 		const result = await pool.query(
-			"INSERT INTO articles (title, description, date_published, user_id) VALUES ($1, $2, CURRENT_DATE, $3) RETURNING id, title, description, date_published, user_id;",
-			[title, description, req.user.id],
+			"INSERT INTO articles (title, description, date_published, user_id) VALUES ($1, $2, CURRENT_DATE, (SELECT id FROM users WHERE username = $3)) RETURNING id, title, description, date_published, user_id;",
+			[title, description, req.user.username],
 		);
 
 		const resultId = result.rows[0].id;
@@ -113,8 +116,10 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 			description,
 			id,
 		]);
+		// TODO: 404 handling
 
 		// TODO: update tags
+		-
 
 		res.status(201).send("User has been updated :)");
 	} catch (err) {

@@ -27,12 +27,16 @@ const MyThings = () => {
 		);
 	}, [dispatch]);
 
+	if (status === "loading" || things == null) {
+		return <div>Loading...</div>;
+	} else if (status === "failed") {
+		return <div>{error}</div>;
+	}
+
 	return (
 		<div className={styles.wrapper}>
-			{status === "loading" && <div>Loading...</div>}
-			{status === "failed" && <div>{error}</div>}
 			<ul className={styles.list}>
-				{things.map((thing) => (
+				{things.articles.map((thing) => (
 					<li className={styles.item} key={thing.id}>
 						<div className={styles.itemContent}>
 							<p>{thing.title}</p>
