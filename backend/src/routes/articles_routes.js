@@ -108,11 +108,7 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 	try {
 		const updateArticle =
 			"UPDATE articles SET title=$1, description=$2 WHERE id = $3";
-		await pool.query(updateArticle, [
-			title,
-			description,
-			id,
-		]);
+		await pool.query(updateArticle, [title, description, id]);
 
 		// TODO: update tags
 
@@ -125,11 +121,20 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 
 //Get articles by Tags
 // TODO: take tag name rather than id
-articleRouter.get("/with-tag/:id", async (req, res) => {
+articleRouter.get("/with-tag/:tagName", async (req, res) => {
 	try {
 		const result = await pool.query(
-			"SELECT articles.id as articleId, articles.title as title, articles.user_id as authorId, users.username as authorUsername FROM articles JOIN article_tags ON articles.id=article_tags.article_id JOIN users ON users.id = articles.user_id WHERE article_tags.tag_id = $1;",
-			[req.params.id],
+			`SELECT articles.id,
+			articles.title, 
+			articles.user_id, 
+			users.username,
+			tags.tag_name 
+			FROM articles 
+			JOIN article_tags ON articles.id=article_tags.article_id 
+			JOIN users ON users.id = articles.user_id
+			JOIN tags ON article_tags.tag_id=tags.id
+			WHERE tags.tag_name = $1`,
+			[req.params.tagName],
 		);
 		res.json(result.rows);
 	} catch (err) {
