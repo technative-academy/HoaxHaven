@@ -40,7 +40,7 @@ userRouter.get("/:username", async (req, res, next) => {
 			return;
 		}
 		res.json({
-			user: userInfoToBeSent,
+			...userInfoToBeSent,
 			articles: articlesList,
 		});
 	} catch (err) {

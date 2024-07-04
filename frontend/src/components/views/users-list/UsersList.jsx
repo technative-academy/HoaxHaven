@@ -23,6 +23,8 @@ const UsersList = () => {
 		);
 	}, [dispatch]);
 
+	console.log(users)
+
 	return (
 		<div className={styles.wrapper}>
 			{status === "loading" && <div>Loading...</div>}
@@ -32,9 +34,9 @@ const UsersList = () => {
 					<li className={styles.item} key={user.id}>
 						<NavLink
 							className={styles.link}
-							to={`/users/${user.id}/`}
+							to={`/users/${user.username}/`}
 						>
-							{user.name}
+							{user.username}
 						</NavLink>
 					</li>
 				))}

@@ -58,7 +58,7 @@ const routes = [
 				element: <ProtectedRoute element={<UsersList />} />,
 			},
 			{
-				path: "users/:id/",
+				path: "users/:username/",
 				element: <ProtectedRoute element={<UserDetail />} />,
 			},
 		],

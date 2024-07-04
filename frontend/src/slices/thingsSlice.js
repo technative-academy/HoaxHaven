@@ -12,10 +12,11 @@ export const fetchThings = createAsyncThunk("things/fetchThings", async () => {
 // Needs to be updated to our backend url
 export const fetchThingsByUser = createAsyncThunk(
 	"things/fetchThingsByUser",
-	async (userId) => {
-		const response = await makeApiRequest(`users/${userId}/things`, {
+	async (username) => {
+		const response = await makeApiRequest(`users/${username}`, {
 			method: "GET",
 		});
+		console.log(response);
 		return response;
 	},
 );
@@ -148,6 +149,7 @@ const thingsSlice = createSlice({
 			})
 			.addCase(fetchMyThings.fulfilled, (state, action) => {
 				state.userThingsStatus = "succeeded";
+				console.log(action.payload);
 				state.userThings = action.payload;
 			})
 			.addCase(fetchMyThings.rejected, (state, action) => {
