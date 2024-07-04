@@ -14,7 +14,12 @@ function Home() {
 
 	return (
 		<div className={styles.wrapper}>
-			<p>Welcome to the things</p>
+			<p>Welcome to Hoax Haven</p>
+			<img
+				className={styles.mainImage}
+				src="/images/main.jpeg"
+				alt="Welcome"
+			/>
 		</div>
 	);
 }
