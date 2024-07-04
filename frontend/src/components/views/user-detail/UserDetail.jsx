@@ -3,49 +3,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 
 import { setBreadcrumb } from "../../../slices/breadcrumbSlice";
-import { fetchThingsByUser } from "../../../slices/thingsSlice";
+// import { fetchThingsByUser } from "../../../slices/thingsSlice";
 import { fetchUser } from "../../../slices/usersSlice";
 
 import styles from "./user-detail.module.css";
 
 const UserDetail = () => {
-	const { id } = useParams();
+	const { username } = useParams();
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.users.user);
 	const userStatus = useSelector((state) => state.users.userStatus);
 	const userError = useSelector((state) => state.users.userError);
-	const things = useSelector((state) => state.things.userThings);
-	const thingsStatus = useSelector((state) => state.things.userThingsStatus);
-	const thingsError = useSelector((state) => state.things.userThingsError);
 
 	useEffect(() => {
-		dispatch(fetchUser(id));
-	}, [dispatch, id]);
-
-	useEffect(() => {
-		dispatch(fetchThingsByUser(id));
-	}, [dispatch, id]);
+		dispatch(fetchUser(username));
+	}, [dispatch, username]);
 
 	useEffect(() => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
 				{ label: "Users", url: "/users/" },
-				{ label: user?.name || "User" },
+				{ label: user?.username || "User" },
 			]),
 		);
 	}, [dispatch, user]);
 
-	if (userStatus === "loading" || thingsStatus === "loading") {
+	if (userStatus === "loading") {
 		return <div>Loading...</div>;
 	}
 
 	if (userStatus === "failed") {
 		return <div>{userError}</div>;
-	}
-
-	if (thingsStatus === "failed") {
-		return <div>{thingsError}</div>;
 	}
 
 	if (!user) {
@@ -55,7 +44,7 @@ const UserDetail = () => {
 	return (
 		<div className={styles.wrapper}>
 			<p>
-				<strong>Name:</strong> <em>{user.name}</em>
+				<strong>Name:</strong> <em>{user.username}</em>
 			</p>
 			<p>
 				<strong>Bio:</strong> <em>{user.bio}</em>
@@ -64,13 +53,13 @@ const UserDetail = () => {
 				<strong>Things:</strong>
 			</p>
 			<ul>
-				{things.map((thing) => (
+				{user.articles.map((thing) => (
 					<li key={thing.id}>
 						<NavLink
 							className={styles.link}
 							to={`/things/${thing.id}/`}
 						>
-							{thing.name}
+							{thing.title}
 						</NavLink>
 					</li>
 				))}

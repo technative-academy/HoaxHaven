@@ -3,30 +3,42 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { makeApiRequest } from "../services/apiService";
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-	const response = await makeApiRequest("", { method: "GET" });
+	const response = await makeApiRequest("users", { method: "GET" });
 	return response;
 });
 
-export const fetchUser = createAsyncThunk("users/fetchUser", async (id) => {
-	const response = await makeApiRequest(`${id}`, { method: "GET" });
-	return response;
-});
+export const fetchUser = createAsyncThunk(
+	"users/fetchUser",
+	async (username) => {
+		const response = await makeApiRequest(`users/${username}`, {
+			method: "GET",
+		});
+		return response;
+	},
+);
 
 // TODO: create user (POST)??????
-export const createUser = createAsyncThunk("users/createUsers", async (newUser) => {
-	const response = await makeApiRequest(`/`, {
-		method: "POST",
-		body: JSON.stringify(newUser),
-	}); 
-	return response;
-});
+export const createUser = createAsyncThunk(
+	"users/createUsers",
+	async (newUser) => {
+		const response = await makeApiRequest(`/`, {
+			method: "POST",
+			body: JSON.stringify(newUser),
+		});
+		return response;
+	},
+);
 // TODO: delete user (DELETE)??????
-export const deleteUser = createAsyncThunk("users/deleteUser", async (id) => {
-	const response = await makeApiRequest(`/${id}`, { 
-		method: "DELETE"});
+export const deleteUser = createAsyncThunk(
+	"users/deleteUser",
+	async (username) => {
+		const response = await makeApiRequest(`users/${username}`, {
+			method: "DELETE",
+		});
 
-	return response
-});
+		return response;
+	},
+);
 
 const usersSlice = createSlice({
 	name: "users",
