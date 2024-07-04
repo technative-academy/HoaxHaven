@@ -57,7 +57,7 @@ userRouter.get("/:username", authenticateToken, async (req, res, next) => {
 		const { username, email, password } = validated.data;
 		try {
 			await pool.query(
-				'INSERT INTO users (username, email, "password", date_joined) VALUES ($1, $2, $3, CURRENT_DATE);',
+				'INSERT INTO users (username, email, "password", date_joined, bio) VALUES ($1, $2, $3, CURRENT_DATE, $4);',
 				[username, email, password],
 			);
 			res.sendStatus(201);
@@ -94,5 +94,32 @@ userRouter.delete("/:username", authenticateToken, async (req, res, next) => {
 		res.status(500).send("Server error :(");
 	}
 });
+
+// userRouter.put("/:id/bio", authenticateToken, async (req, res) => {
+// 	const userId = req.params.id;
+// 	const { bio } = req.body;
+
+// 	// Optional: validate the bio input
+// 	if (typeof bio !== "string" || bio.trim() === "") {
+// 		res.status(400).send("Invalid bio provided.");
+// 		return;
+// 	}
+
+// 	try {
+// 		const result = await pool.query(
+// 			"UPDATE users SET bio = $1 WHERE id = $2",
+// 			[bio, userId],
+// 		);
+
+// 		if (result.rowCount === 0) {
+// 			res.status(404).send("User not found.");
+// 		} else {
+// 			res.sendStatus(204);
+// 		}
+// 	} catch (err) {
+// 		console.error(err);
+// 		res.status(500).send("Server error: Unable to update bio.");
+// 	}
+// });
 
 export default userRouter;

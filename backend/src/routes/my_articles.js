@@ -67,4 +67,7 @@ myArticleRouter.delete("/:id", authenticateToken, async (req, res) => {
 	}
 });
 
+
+
+
 export default myArticleRouter;

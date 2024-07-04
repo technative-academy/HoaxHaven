@@ -21,7 +21,7 @@ const generateRefreshToken = (user) => {
 	});
 };
 
-const registerUser = async (name, email, password) => {
+const registerUser = async (name, email, password, bio) => {
 	// Check if the email already exists
 	const emailCheckResult = await pool.query(
 		"SELECT * FROM users WHERE email = $1",
@@ -35,8 +35,8 @@ const registerUser = async (name, email, password) => {
 	// hash the password and insert the new user into the database
 	const hashedPassword = await bcrypt.hash(password, 10);
 	const result = await pool.query(
-		"INSERT INTO users (username, email, password, date_joined ) VALUES ($1, $2, $3, CURRENT_DATE) RETURNING *",
-		[name, email, hashedPassword],
+		"INSERT INTO users (username, email, password, date_joined, bio) VALUES ($1, $2, $3, CURRENT_DATE, $4) RETURNING *",
+		[name, email, hashedPassword, bio],
 	);
 
 	// Return the newly created user
