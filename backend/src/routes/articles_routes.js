@@ -143,21 +143,6 @@ articleRouter.get("/with-tag/:tagName", async (req, res) => {
 	}
 });
 
-//Get tags for articles
-// TODO: merge with GET /:articleId
-articleRouter.get("/:articleId/tags", async (req, res) => {
-	try {
-		const result = await pool.query(
-			"SELECT tags.tag_name, articles.title FROM tags JOIN article_tags ON tags.id=article_tags.tag_id JOIN articles ON articles.id=article_tags.article_id WHERE article_tags.article_id=$1;",
-			[req.params.articleId],
-		);
-		res.json(result.rows);
-	} catch (err) {
-		console.log(err);
-		res.status(500).send("An Internal Server Error Occurred");
-	}
-});
-
 //Get all tags
 articleRouter.get("/tags", async (req, res) => {
 	try {
