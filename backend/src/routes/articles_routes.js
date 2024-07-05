@@ -18,6 +18,19 @@ articleRouter.get("/", async (req, res, next) => {
 	}
 });
 
+
+//Get all tags
+articleRouter.get("/tags", async (req, res) => {
+	try {
+		const result = await pool.query("SELECT tag_name FROM tags;");
+		res.json(result.rows);
+	} catch (err) {
+		console.log(err);
+		res.status(500).send("An Internal Server Error Occurred");
+	}
+});
+
+
 // Get articles by article ID
 articleRouter.get("/:id", async (req, res, next) => {
 	const { id } = req.params;
@@ -144,17 +157,6 @@ articleRouter.get("/with-tag/:tagName", async (req, res) => {
 	} catch (err) {
 		console.log(err);
 		res.status(500).send("Internal Server Error");
-	}
-});
-
-//Get all tags
-articleRouter.get("/tags/getall", async (req, res) => {
-	try {
-		const result = await pool.query("SELECT tag_name FROM tags;");
-		res.json(result.rows);
-	} catch (err) {
-		console.log(err);
-		res.status(500).send("An Internal Server Error Occurred");
 	}
 });
 

@@ -94,7 +94,7 @@ export const fetchTagsForArticles = createAsyncThunk(
 // TODO: GET all tags
 // '/tags'
 export const fetchAllTags = createAsyncThunk("things/allArticles", async () => {
-	const response = await makeApiRequest(`articles/tags/getall`, {
+	const response = await makeApiRequest(`articles/tags`, {
 		method: "GET",
 	});
 	return response;
