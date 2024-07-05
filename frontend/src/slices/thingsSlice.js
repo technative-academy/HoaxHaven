@@ -65,14 +65,6 @@ export const deleteThing = createAsyncThunk(
 	},
 );
 
-// // TODO: ADD tags
-// export const addTag = createAsyncThunk(
-// 	"things/addTag",
-// 	async (id) => {
-// 		await makeApiRequest(`with-tags/${id}`, { method: "POST" });
-// 		return id;
-// 	},
-// );
 
 // TODO: GET articles by TAGS
 // TODO: take tag name rather than id
