@@ -25,7 +25,7 @@ const Login = () => {
 		e.preventDefault();
 		try {
 			await dispatch(login({ email, password })).unwrap();
-			navigate("/my-things/");
+			navigate("/my/");
 		} catch (error) {
 			console.error(error);
 		}

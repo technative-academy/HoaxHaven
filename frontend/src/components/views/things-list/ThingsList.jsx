@@ -32,7 +32,7 @@ const ThingsList = () => {
 					<li className={styles.item} key={thing.id}>
 						<NavLink
 							className={styles.link}
-							to={`/things/${thing.id}/`}
+							to={`/articles/${thing.id}/`}
 						>
 							{thing.title}
 						</NavLink>

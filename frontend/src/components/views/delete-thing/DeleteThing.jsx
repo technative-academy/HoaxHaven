@@ -20,7 +20,7 @@ const DeleteThing = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "My article", url: "/my-things/" },
+				{ label: "My article", url: "/my/" },
 				{ label: "Delete article" },
 			]),
 		);
@@ -35,8 +35,8 @@ const DeleteThing = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		await dispatch(deleteThing(thing.id));
-		dispatch(showToast(`Thing deleted`));
-		navigate("/my-things/");
+		dispatch(showToast(`Article deleted`));
+		navigate("/my/");
 	};
 
 	return (
