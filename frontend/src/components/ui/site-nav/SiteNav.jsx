@@ -9,6 +9,7 @@ function SiteNav() {
 	const navLinks = [
 		{ label: "Home", url: "/" },
 		{ label: "Articles", url: "/articles/" },
+		{ label: "Tags", url: "/tags" },
 	];
 
 	if (isLoggedIn) {

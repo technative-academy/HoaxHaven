@@ -79,8 +79,8 @@ export const deleteThing = createAsyncThunk(
 // "/with-tag/:id"
 export const fetchAllArticlesByTags = createAsyncThunk(
 	"things/allArticlesByTags",
-	async (id) => {
-		const response = await makeApiRequest(`with-tag/${id}`, {
+	async (tagName) => {
+		const response = await makeApiRequest(`with-tag/${tagName}`, {
 			method: "GET",
 		});
 		return response;
@@ -103,7 +103,9 @@ export const fetchTagsForArticles = createAsyncThunk(
 // TODO: GET all tags
 // '/tags'
 export const fetchAllTags = createAsyncThunk("things/allArticles", async () => {
-	const response = await makeApiRequest(`tags`, { method: "GET" });
+	const response = await makeApiRequest(`articles/tags/getall`, {
+		method: "GET",
+	});
 	return response;
 });
 
@@ -179,6 +181,28 @@ const thingsSlice = createSlice({
 				state.items = state.items.filter(
 					(item) => item.id !== action.payload,
 				);
+			})
+			.addCase(fetchAllTags.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchAllTags.fulfilled, (state, action) => {
+				state.status = "succeeded";
+				state.items = action.payload;
+			})
+			.addCase(fetchAllTags.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
+			})
+			.addCase(fetchAllArticlesByTags.pending, (state) => {
+				state.status = "loading";
+			})
+			.addCase(fetchAllArticlesByTags.fulfilled, (state, action) => {
+				state.status = "succeeded";
+				state.items = action.payload;
+			})
+			.addCase(fetchAllArticlesByTags.rejected, (state, action) => {
+				state.status = "failed";
+				state.error = action.error.message;
 			});
 	},
 });

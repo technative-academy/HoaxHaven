@@ -7,10 +7,12 @@ import Home from "./components/views/home/Home";
 import Login from "./components/views/login/Login";
 import MyThings from "./components/views/my-things/MyThings";
 import Register from "./components/views/register/Register";
+import TagList from "./components/views/tag-list/tag-list";
 import ThingDetail from "./components/views/thing-detail/ThingDetail";
 import ThingsList from "./components/views/things-list/ThingsList";
 import UserDetail from "./components/views/user-detail/UserDetail";
 import UsersList from "./components/views/users-list/UsersList";
+import TagArticlesList from "./components/views/tag-articles-list/TagArticlesList";
 
 const routes = [
 	{
@@ -32,6 +34,14 @@ const routes = [
 			{
 				path: "articles/",
 				element: <ThingsList />,
+			},
+			{
+				path: "tags/",
+				element: <TagList />,
+			},
+			{
+				path:"with-tag/:tagName",
+				element: <TagArticlesList/>
 			},
 			{
 				path: "articles/:id/",
