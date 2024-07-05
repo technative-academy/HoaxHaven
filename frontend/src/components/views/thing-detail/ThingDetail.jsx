@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router-dom";
 
@@ -18,6 +18,11 @@ const ThingDetail = () => {
 	useEffect(() => {
 		dispatch(fetchThing(id));
 	}, [dispatch, id]);
+
+	const descriptionLines = useMemo(
+		() => thing?.description.split(/\r?\n+/),
+		[thing?.description],
+	);
 
 	useEffect(() => {
 		dispatch(
@@ -46,9 +51,19 @@ const ThingDetail = () => {
 			<p>
 				<strong>Name:</strong> <em>{thing.title}</em>
 			</p>
-			<p>
-				<strong>Description:</strong> <em>{thing.description}</em>
-			</p>
+			{isLoggedIn && (
+				<p>
+					<strong>Owner:</strong>
+					<em>
+						<NavLink
+							className={styles.link}
+							to={`/users/${thing.username}/`}
+						>
+							{thing.username}
+						</NavLink>
+					</em>
+				</p>
+			)}
 			<p>
 				<strong>Tags: </strong>
 				<em>
@@ -66,20 +81,13 @@ const ThingDetail = () => {
 					})}
 				</em>
 			</p>
+			<hr></hr>
 
-			{isLoggedIn && (
-				<p>
-					<strong>Owner:</strong>
-					<em>
-						<NavLink
-							className={styles.link}
-							to={`/users/${thing.username}/`}
-						>
-							{thing.username}
-						</NavLink>
-					</em>
-				</p>
-			)}
+			<div>
+				{descriptionLines.map((line) => (
+					<p>{line}</p>
+				))}
+			</div>
 		</div>
 	);
 };
