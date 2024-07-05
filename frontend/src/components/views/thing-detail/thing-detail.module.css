@@ -1,5 +1,6 @@
 .wrapper {
 	background: #efefef;
 	width: 100%;
+	height: fit-content;
 	padding: 1rem;
 }
