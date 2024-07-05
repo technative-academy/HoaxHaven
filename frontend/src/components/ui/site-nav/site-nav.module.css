@@ -4,23 +4,44 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-start;
-	background: #f3ca52;
+	background: #c62828;
 }
 
 .links {
 	display: flex;
+	align-items: center;
+	background-color: #c62828;
+	padding: 10px;
 }
 
 .activeLink,
 .inactiveLink {
 	font-size: 20px;
 	margin-right: 1.5rem;
+	padding: 10px 20px;
+	border-radius: 5px;
+	transition:
+		background-color 0.3s,
+		color 0.3s;
+	text-decoration: none;
 }
 
 .activeLink {
-	color: #000;
+	color: white;
+	background-color: #d0d0d0;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.activeLink:hover {
+	background-color: #1565c0;
 }
 
 .inactiveLink {
-	color: #666;
+	color: #000;
+	background-color: #d0d0d0;
+}
+
+.inactiveLink:hover {
+	color: #000;
+	background-color: #004aad;
 }

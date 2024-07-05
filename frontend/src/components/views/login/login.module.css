@@ -12,3 +12,17 @@
 	padding: 10px;
 	border: 1px solid #ccc;
 }
+
+button {
+	margin-top: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	background: linear-gradient(to right, #1565c0, #c62828, #ffffff);
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 8px;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+	transition: box-shadow 0.3s ease-in-out;
+}
