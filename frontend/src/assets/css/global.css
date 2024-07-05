@@ -16,7 +16,9 @@ body {
 body {
 	margin: 0;
 	padding: 0;
-	font-family: Helvetica, sans-serif;
+	font-family: "Baskervville SC", serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 #root {
