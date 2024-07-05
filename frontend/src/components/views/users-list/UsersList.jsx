@@ -23,7 +23,6 @@ const UsersList = () => {
 		);
 	}, [dispatch]);
 
-	console.log(users)
 
 	return (
 		<div className={styles.wrapper}>

@@ -32,7 +32,7 @@ const TagList = () => {
 					<li className={styles.item} key={thing.id}>
 						<NavLink
 							className={styles.link}
-							to={`/tags/${thing.id}/`}
+							to={`/with-tag/${thing.tag_name}/`}
 						>
 							{thing.tag_name}
 						</NavLink>

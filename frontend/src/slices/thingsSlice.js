@@ -79,11 +79,10 @@ export const deleteThing = createAsyncThunk(
 // "/with-tag/:id"
 export const fetchAllArticlesByTags = createAsyncThunk(
 	"things/allArticlesByTags",
-	async (tagName) => {
-		const response = await makeApiRequest(`with-tag/${tagName}`, {
+	async (tag_name) => {
+		return await makeApiRequest(`articles/with-tag/${tag_name}`, {
 			method: "GET",
 		});
-		return response;
 	},
 );
 
