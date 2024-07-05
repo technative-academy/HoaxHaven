@@ -19,7 +19,7 @@ const AddThing = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "Add thing" },
+				{ label: "Add article" },
 			]),
 		);
 	}, [dispatch]);
@@ -31,7 +31,7 @@ const AddThing = () => {
 		setTag("");
 		setName("");
 		setDescription("");
-		navigate("/my-things/");
+		navigate("/my/");
 	};
 
 	return (

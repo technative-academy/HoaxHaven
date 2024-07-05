@@ -23,8 +23,8 @@ const ThingDetail = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "Articles", url: "/things/" },
-				{ label: thing?.name || "Thing" },
+				{ label: "Articles", url: "/articles/" },
+				{ label: thing?.name || "Article" },
 			]),
 		);
 	}, [dispatch, thing]);
@@ -38,7 +38,7 @@ const ThingDetail = () => {
 	}
 
 	if (!thing) {
-		return <div>Thing not found</div>;
+		return <div>Article not found</div>;
 	}
 
 	return (
@@ -51,7 +51,20 @@ const ThingDetail = () => {
 			</p>
 			<p>
 				<strong>Tags: </strong>
-				<em> {thing.tags.join(", ")}</em>
+				<em>
+					{thing.tags.map((tag) => {
+						return (
+							<NavLink
+								style={{ marginLeft: 14 }}
+								key={tag}
+								className={styles.link}
+								to={`/with-tag/${tag}/`}
+							>
+								{tag}
+							</NavLink>
+						);
+					})}
+				</em>
 			</p>
 
 			{isLoggedIn && (

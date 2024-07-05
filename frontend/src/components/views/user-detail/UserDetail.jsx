@@ -57,7 +57,7 @@ const UserDetail = () => {
 					<li key={thing.id}>
 						<NavLink
 							className={styles.link}
-							to={`/things/${thing.id}/`}
+							to={`/articles/${thing.id}/`}
 						>
 							{thing.title}
 						</NavLink>
