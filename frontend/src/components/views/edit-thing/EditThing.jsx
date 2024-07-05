@@ -22,7 +22,7 @@ const EditThing = () => {
 		dispatch(
 			setBreadcrumb([
 				{ label: "Home", url: "/" },
-				{ label: "My articles", url: "/my-things/" },
+				{ label: "My articles", url: "/my/" },
 				{ label: "Edit article" },
 			]),
 		);
@@ -49,7 +49,7 @@ const EditThing = () => {
 			}),
 		);
 		dispatch(showToast(`${thing.title} updated!`));
-		navigate("/my-things/");
+		navigate("/my/");
 	};
 
 	return (

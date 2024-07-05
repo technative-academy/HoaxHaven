@@ -27,7 +27,7 @@ const Register = () => {
 		try {
 			await register(name, email, password, bio);
 			await dispatch(login({ email, password })).unwrap();
-			navigate("/my-things/add/");
+			navigate("/my/add/");
 		} catch (error) {
 			console.error(error);
 		}

@@ -7,10 +7,12 @@ import Home from "./components/views/home/Home";
 import Login from "./components/views/login/Login";
 import MyThings from "./components/views/my-things/MyThings";
 import Register from "./components/views/register/Register";
+import TagList from "./components/views/tag-list/tag-list";
 import ThingDetail from "./components/views/thing-detail/ThingDetail";
 import ThingsList from "./components/views/things-list/ThingsList";
 import UserDetail from "./components/views/user-detail/UserDetail";
 import UsersList from "./components/views/users-list/UsersList";
+import TagArticlesList from "./components/views/tag-articles-list/TagArticlesList";
 
 const routes = [
 	{
@@ -30,27 +32,35 @@ const routes = [
 				element: <Register />,
 			},
 			{
-				path: "things/",
+				path: "articles/",
 				element: <ThingsList />,
 			},
 			{
-				path: "things/:id/",
+				path: "tags/",
+				element: <TagList />,
+			},
+			{
+				path:"with-tag/:tagName",
+				element: <TagArticlesList/>
+			},
+			{
+				path: "articles/:id/",
 				element: <ThingDetail />,
 			},
 			{
-				path: "my-things/",
+				path: "my/",
 				element: <ProtectedRoute element={<MyThings />} />,
 			},
 			{
-				path: "my-things/add/",
+				path: "my/add/",
 				element: <ProtectedRoute element={<AddThing />} />,
 			},
 			{
-				path: "my-things/:id/edit/",
+				path: "my/:id/edit/",
 				element: <ProtectedRoute element={<EditThing />} />,
 			},
 			{
-				path: "my-things/:id/delete/",
+				path: "my/:id/delete/",
 				element: <ProtectedRoute element={<DeleteThing />} />,
 			},
 			{

@@ -16,8 +16,8 @@ function SiteHeader() {
 	const navLinks = [];
 	if (isLoggedIn) {
 		navLinks.push(
-			{ label: "My articles", url: "/my-things/" },
-			{ label: "Add article", url: "/my-things/add/" },
+			{ label: "My articles", url: "/my/" },
+			{ label: "Add article", url: "/my/add/" },
 		);
 	} else {
 		navLinks.push(

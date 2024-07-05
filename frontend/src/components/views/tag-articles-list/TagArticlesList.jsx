@@ -1,27 +1,31 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 import { setBreadcrumb } from "../../../slices/breadcrumbSlice";
-import { fetchThings } from "../../../slices/thingsSlice";
+import { fetchAllArticlesByTags } from "../../../slices/thingsSlice";
+import styles from "./TagArticlesList.module.css";
 
-import styles from "./things-list.module.css";
-
-const ThingsList = () => {
+const TagList = () => {
+	const { tagName } = useParams();
 	const dispatch = useDispatch();
 	const things = useSelector((state) => state.things.items);
 	const status = useSelector((state) => state.things.status);
 	const error = useSelector((state) => state.things.error);
 
 	useEffect(() => {
-		dispatch(fetchThings());
-	}, [dispatch]);
+		dispatch(fetchAllArticlesByTags(tagName));
+	}, [dispatch, tagName]);
 
 	useEffect(() => {
 		dispatch(
-			setBreadcrumb([{ label: "Home", url: "/" }, { label: "Articles" }]),
+			setBreadcrumb([
+				{ label: "Home", url: "/" },
+				{ label: "Tags", url: "/tags" },
+				{ label: tagName },
+			]),
 		);
-	}, [dispatch]);
+	}, [dispatch, tagName]);
 
 	return (
 		<div className={styles.wrapper}>
@@ -43,4 +47,4 @@ const ThingsList = () => {
 	);
 };
 
-export default ThingsList;
+export default TagList;
