@@ -19,9 +19,13 @@ const TagList = () => {
 
 	useEffect(() => {
 		dispatch(
-			setBreadcrumb([{ label: "Home", url: "/" }, { label: "Tags" }]),
+			setBreadcrumb([
+				{ label: "Home", url: "/" },
+				{ label: "Tags", url: "/tags" },
+				{ label: tagName },
+			]),
 		);
-	}, [dispatch]);
+	}, [dispatch, tagName]);
 
 	return (
 		<div className={styles.wrapper}>
