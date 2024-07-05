@@ -104,21 +104,21 @@ articleRouter.delete("/:id", authenticateToken, async (req, res) => {
 
 //Put update on an article+tag
 // TODO: take tag name rather than id
-articleRouter.put("/:id", authenticateToken, async (req, res) => {
-	const { id } = req.params;
+articleRouter.put("/:id", async (req, res) => {
+	const { id: articleId } = req.params;
 	const { title, description, tags } = req.body;
 
 	try {
 		const updateArticle =
 			"UPDATE articles SET title=$1, description=$2 WHERE id = $3";
-		await pool.query(updateArticle, [title, description, id]);
+		await pool.query(updateArticle, [title, description, articleId]);
 		// TODO: 404 handling
 
 		// TODO: update tags
 
 		const currentArticleTagsResult = await pool.query(
 			"SELECT tags.tag_name FROM tags JOIN article_tags ON tags.id = article_tags.tag_id WHERE article_tags.article_id = $1",
-			[id],
+			[articleId],
 		);
 		// Mapped tags
 		const currentArtcleTags = currentArticleTagsResult.rows.map(
@@ -129,51 +129,42 @@ articleRouter.put("/:id", authenticateToken, async (req, res) => {
 		const tagsToAdd = tags.filter(
 			(tag) => !currentArtcleTags.includes(tag),
 		);
-		const tagsToRemove = tags.filter((tag) =>
-			currentArtcleTags.includes(tag),
+		const tagsToRemove = currentArtcleTags.filter(
+			(tag) => !tags.includes(tag),
 		);
 
 		// Remove old tags
 
-		if (tagsToRemove.length === 0) {
+		if (tagsToRemove.length !== 0) {
 			for (const tag of tagsToRemove) {
-				console.log(tag);
-				let tagIdResult = await pool.query(
-					"SELECT id from tags WHERE tag_name=$1",
-					[tag],
+				await pool.query(
+					"DELETE FROM article_tags USING tags WHERE tags.id = article_tags.tag_id AND article_tags.article_id = $1 AND tags.tag_name = $2",
+					[articleId, tag],
 				);
-				if (tagIdResult.rows.length > 0) {
-					const tagId = tagIdResult.rows[0].id;
-					await pool.query(
-						"DELETE FROM article_tags WHERE article_id = $1 AND tag_id = $2",
-						[id, tagId],
-					);
-				}
 			}
 		}
 
 		// Adds new tags
 
-		for (const tag in tagsToAdd) {
-			let tagIdResult = await pool.query(
-				"SELECT id from tags WHERE tag_name=$1",
-				[tag],
-			);
-			let tagId;
-			if (tagIdResult.rows.length === 0) {
-				const insertTagResult = await pool.query(
-					"INSERT INTO tags(tag_name) VALUES ($1) RETURNING id",
-					[tag],
-				);
-				// console.log(insertTagResult);
-				tagId = insertTagResult.rows[0].id;
-			} else {
-				tagId = tagIdResult.rows[0].id;
+		for (const tagNameToAdd of tagsToAdd) {
+			let tagId = (
+				await pool.query("SELECT id from tags WHERE tag_name=$1", [
+					tagNameToAdd,
+				])
+			).rows[0]?.id;
+
+			if (tagId == null) {
+				tagId = (
+					await pool.query(
+						"INSERT INTO tags (tag_name) VALUES ($1) RETURNING id",
+						[tagNameToAdd],
+					)
+				).rows[0].id;
 			}
-			console.log(tagId);
+			console.log(articleId, tagId);
 			await pool.query(
-				"INSERT INTO article_tags(article_id, tag_id) VALUES ($1, $2)",
-				[id, tagId],
+				"INSERT INTO article_tags (article_id, tag_id) VALUES ($1, $2)",
+				[articleId, tagId],
 			);
 		}
 
