@@ -51,7 +51,20 @@ const ThingDetail = () => {
 			</p>
 			<p>
 				<strong>Tags: </strong>
-				<em> {thing.tags.join(", ")}</em>
+				<em>
+					{thing.tags.map((tag) => {
+						return (
+							<NavLink
+								style={{ marginLeft: 14 }}
+								key={tag}
+								className={styles.link}
+								to={`/with-tag/${tag}/`}
+							>
+								{tag}
+							</NavLink>
+						);
+					})}
+				</em>
 			</p>
 
 			{isLoggedIn && (
