@@ -67,7 +67,7 @@ const AddThing = () => {
 					/>
 				</label>
 				<div className={styles.inputContainer}>
-					<button type="submit">Add Thing</button>
+					<button type="submit">Add Article</button>
 				</div>
 			</form>
 		</div>

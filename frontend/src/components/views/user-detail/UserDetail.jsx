@@ -50,7 +50,7 @@ const UserDetail = () => {
 				<strong>Bio:</strong> <em>{user.bio}</em>
 			</p>
 			<p>
-				<strong>Things:</strong>
+				<strong>Articles:</strong>
 			</p>
 			<ul>
 				{user.articles.map((thing) => (
